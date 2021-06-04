@@ -10,8 +10,7 @@ class Card extends React.Component{
     }
 
     onDateChange = () =>{
-      var currentDate = this.currentDate;
-      this.props.dateChange(currentDate.value)
+      this.props.dateChange(this.currentDate.value)
     }
 
     readMore = () =>{
@@ -31,15 +30,21 @@ class Card extends React.Component{
 
         return(
             <div>
-              <h1 className='mx-auto'>{this.props.data.title}</h1>
+              <h1 className='mx-auto' id = "title">{this.props.data.title}</h1>
               <div className="card mb-4 box-shadow">
-                <img 
+                {this.props.data.media_type === "image" ? (
+                    <img 
                   className="card-img-top mx-auto mt-4" 
                   data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" 
                   alt="Thumbnail [100%x225]" 
                   style={{height: "auto", width: "75%", display: 'block'}}
                     src={this.props.data.url} 
                   data-holder-rendered="true" />
+                ) : (
+                  <div className = "embed-responsive embed-responsive-16by9">
+                    <iframe title={this.props.data.title} width = "800" height = "480" src = {this.props.data.url}></iframe>
+                  </div>
+                )}
                   <div className="card-body">
                     {this.state.readMore ? (
                       <p className="card-text">{this.props.data.explanation}</p>

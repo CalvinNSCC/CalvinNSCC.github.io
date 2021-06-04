@@ -1,0 +1,14 @@
+@font-face {
+  font-family: Awakening;
+  src: url("../fonts/AwakenningPersonalUse-DOLPD.ttf");
+}
+
+@font-face {
+  font-family: Soloist;
+  src: url("../fonts/Soloist/Soloist-Z6M8.otf");
+}
+
+#title{
+  font-family: Soloist;
+  text-align: center;
+}

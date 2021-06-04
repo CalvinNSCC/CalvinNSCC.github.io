@@ -13,29 +13,23 @@ class Main extends React.Component {
 
     componentDidMount(){
       //initial api call for data
-      if(this.state.date){
-        Axios.get(`https://api.nasa.gov/planetary/apod?api_key=o2cSTyveBdiNPAf3yW9DIo4ClewjA4pxDjgLAPo6&date=${this.state.date}`)
+      Axios.get(`https://api.nasa.gov/planetary/apod?api_key=o2cSTyveBdiNPAf3yW9DIo4ClewjA4pxDjgLAPo6`)
         .then(response => {
           this.setState({
             spaceData: response.data,
             minText: (response.data.explanation.slice(0,100) +"...")
           })
         })
-      }else{
-        Axios.get(`https://api.nasa.gov/planetary/apod?api_key=o2cSTyveBdiNPAf3yW9DIo4ClewjA4pxDjgLAPo6`)
-        .then(response => {
-          this.setState({
-            spaceData: response.data,
-            minText: (response.data.explanation.slice(0,100) +"...")
-          })
-        })
-      }
     }
 
     dateChange = (date) =>{
-      this.setState({
-        date: date
-      })
+      Axios.get(`https://api.nasa.gov/planetary/apod?api_key=o2cSTyveBdiNPAf3yW9DIo4ClewjA4pxDjgLAPo6&date=${date}`)
+        .then(response => {
+          this.setState({
+            spaceData: response.data,
+            minText: (response.data.explanation.slice(0,100) +"...")
+          })
+        })
     }
 
     render(){
