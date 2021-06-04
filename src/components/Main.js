@@ -17,25 +17,22 @@ class Main extends React.Component {
         Axios.get(`https://api.nasa.gov/planetary/apod?api_key=o2cSTyveBdiNPAf3yW9DIo4ClewjA4pxDjgLAPo6&date=${this.state.date}`)
         .then(response => {
           this.setState({
-              spaceData: response.data,
-              minText: (response.data.explanation.slice(0,100) +"...")
+            spaceData: response.data,
+            minText: (response.data.explanation.slice(0,100) +"...")
           })
-        }
-      )
+        })
       }else{
         Axios.get(`https://api.nasa.gov/planetary/apod?api_key=o2cSTyveBdiNPAf3yW9DIo4ClewjA4pxDjgLAPo6`)
         .then(response => {
           this.setState({
-              spaceData: response.data,
-              minText: (response.data.explanation.slice(0,100) +"...")
+            spaceData: response.data,
+            minText: (response.data.explanation.slice(0,100) +"...")
           })
-        }
-      )
+        })
       }
     }
 
     dateChange = (date) =>{
-      console.log(date)
       this.setState({
         date: date
       })
