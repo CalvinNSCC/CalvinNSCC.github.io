@@ -4,13 +4,52 @@ import '../css/App.css'
 class Card extends React.Component{
     
     constructor(props){
-        super(props);
-        this.state = {readMore: false};
-        this.onDateChange = this.onDateChange.bind(this);
+      super(props);
+      this.state = {};
+      this.onDateChange = this.onDateChange.bind(this);
+    }
+
+    componentDidMount = () =>{
+      var today = new Date();
+      this.setState({
+        readMore: false,
+        date: today.toISOString().slice(0,10)
+      })
     }
 
     onDateChange = () =>{
+      this.setState({
+        date: this.currentDate.value
+      })
       this.props.dateChange(this.currentDate.value)
+    }
+
+    getPrevDay = () =>{
+      //https://stackoverflow.com/questions/1296358/how-to-subtract-days-from-a-plain-date
+      //turn the currentDate.value into a date object and substract a day or add a day
+
+      var dateOffset = (24*60*60*1000);
+      var chosenDate = new Date(this.state.date);
+      
+
+      console.log(chosenDate.toISOString().slice(0,10))
+      chosenDate.setTime(chosenDate.getTime() - dateOffset)
+      
+      chosenDate = chosenDate.toISOString().slice(0,10)
+      this.setState({date: chosenDate})
+      this.props.dateChange(chosenDate)
+    }
+
+    getNextDay = () =>{
+      var dateOffset = (24*60*60*1000);
+      var chosenDate = new Date(this.state.date);
+      
+      console.log(chosenDate.toISOString().slice(0,10))
+      chosenDate.setTime(chosenDate.getTime() + dateOffset)
+      
+      chosenDate = chosenDate.toISOString().slice(0,10)
+      this.setState({date: chosenDate})
+      this.props.dateChange(chosenDate)
     }
 
     readMore = () =>{
@@ -30,6 +69,16 @@ class Card extends React.Component{
 
         return(
             <div>
+
+                <button className="btn btn-sm btn-danger" id="alertBtn">Open Modal</button>
+                <div id="alertModal" class="modal">
+                  <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>Some text in the Modal..</p>
+                  </div>
+
+                </div>
+
               <h1 className='mx-auto' id = "title">{this.props.data.title}</h1>
               <div className="card mb-4 box-shadow">
                 {this.props.data.media_type === "image" ? (
@@ -63,6 +112,10 @@ class Card extends React.Component{
                     <div className = "d-inline-flex">
                       <input type="date" className="mr-4" max = {today} min = "1995-06-16" name = 'currentDate' ref={(c) => this.currentDate = c}></input>
                       <button type="button" className="btn btn-sm btn-info" onClick={this.onDateChange}>Submit</button>
+                    </div>
+                    <div className = "d-flex py-3 justify-content-between">
+                      <button className='btn btn-sm btn-outline-secondary' onClick={this.getPrevDay}>Previous day</button>
+                      <button className='btn btn-sm btn-outline-secondary' onClick={this.getNextDay}>Next day</button>
                     </div>
                 </div>  
             </div>
