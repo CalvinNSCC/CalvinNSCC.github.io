@@ -30,12 +30,19 @@ class Card extends React.Component{
 
       var dateOffset = (24*60*60*1000);
       var chosenDate = new Date(this.state.date);
-      
+      var dateCheck = new Date();
+
 
       console.log(chosenDate.toISOString().slice(0,10))
       chosenDate.setTime(chosenDate.getTime() - dateOffset)
       
-      chosenDate = chosenDate.toISOString().slice(0,10)
+      if(chosenDate < dateCheck){
+        chosenDate = this.state.date
+        alert("Unable to retrieve data from the past. I haven't invented time travel yet.")
+      }else{
+        chosenDate = chosenDate.toISOString().slice(0,10)
+      }
+
       this.setState({date: chosenDate})
       this.props.dateChange(chosenDate)
     }
@@ -43,9 +50,13 @@ class Card extends React.Component{
     getNextDay = () =>{
       var dateOffset = (24*60*60*1000);
       var chosenDate = new Date(this.state.date);
-      
-      console.log(chosenDate.toISOString().slice(0,10))
+      var dateCheck = new Date();
+    
       chosenDate.setTime(chosenDate.getTime() + dateOffset)
+      if(chosenDate > dateCheck){
+        chosenDate = dateCheck
+        alert("Unable to retrieve data from the future. I haven't invented time travel yet.")
+      }
       
       chosenDate = chosenDate.toISOString().slice(0,10)
       this.setState({date: chosenDate})
@@ -69,16 +80,6 @@ class Card extends React.Component{
 
         return(
             <div>
-
-                <button className="btn btn-sm btn-danger" id="alertBtn">Open Modal</button>
-                <div id="alertModal" class="modal">
-                  <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <p>Some text in the Modal..</p>
-                  </div>
-
-                </div>
-
               <h1 className='mx-auto' id = "title">{this.props.data.title}</h1>
               <div className="card mb-4 box-shadow">
                 {this.props.data.media_type === "image" ? (
