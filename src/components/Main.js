@@ -25,10 +25,17 @@ class Main extends React.Component {
     dateChange = (date) =>{
       Axios.get(`https://api.nasa.gov/planetary/apod?api_key=o2cSTyveBdiNPAf3yW9DIo4ClewjA4pxDjgLAPo6&date=${date}`)
         .then(response => {
-          this.setState({
-            spaceData: response.data,
-            minText: (response.data.explanation.slice(0,100) +"...")
-          })
+          if(response.data.explanation === ""){
+            this.setState({
+              spaceData: response.data,
+              minText: "Explanation unavailable for this date"
+            })
+          }else{
+            this.setState({
+              spaceData: response.data,
+              minText: (response.data.explanation.slice(0,100) +"...")
+            })
+          }
         })
     }
 
