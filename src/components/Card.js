@@ -15,7 +15,7 @@ class Card extends React.Component{
       this.setState({
         readMore: false,
         date: today.toISOString().slice(0,10),
-        accessible: false
+        accessible: true
       })
     }
 
@@ -96,12 +96,12 @@ class Card extends React.Component{
                     <h1 className='mx-auto' id = "title-regular-font">{this.props.data.title}</h1>
                   )
                 }
-                <input type = "checkbox" id = "access" onChange={this.swapAccessible}></input>
-                <label htmlFor = "access">Filler text</label>
+                
               </div>
 
-              <div id = "access-checkbox">
-                
+              <div id = "access-checkbox" className="d-block text-center ">
+                <input type = "checkbox" id = "access" className="mr-2" onChange={this.swapAccessible}></input>
+                <label htmlFor = "access">Click here to disable the wacky title font</label>
               </div>
               
               
