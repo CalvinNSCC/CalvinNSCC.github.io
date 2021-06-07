@@ -34,34 +34,31 @@ class Card extends React.Component{
       var chosenDate = new Date(this.state.date);//date taken from the date input
       var dateCheck = new Date(this.state.date);//date to check against the date input for pagination
 
-
-      console.log(chosenDate.toISOString().slice(0,10))
       chosenDate.setTime(chosenDate.getTime() - dateOffset)//subtracting a day to get the day prior
-      if(chosenDate < (dateCheck - dateOffset)){
+      if(chosenDate <= (dateCheck.getTime() - dateOffset)){
         chosenDate = this.state.date
         alert("Unable to retrieve data from the past. I haven't invented time travel yet.")
       }else{
         chosenDate = chosenDate.toISOString().slice(0,10)
+        this.setState({date: chosenDate})
+        this.props.dateChange(chosenDate)
       }
-
-      this.setState({date: chosenDate})
-      this.props.dateChange(chosenDate)
     }
 
     getNextDay = () =>{
       var dateOffset = (24*60*60*1000);
       var chosenDate = new Date(this.state.date);
-      var dateCheck = new Date(this.state.date + dateOffset);
+      var dateCheck = new Date(this.state.date);
     
       chosenDate.setTime(chosenDate.getTime() + dateOffset)
-      if(chosenDate >= (dateCheck + dateOffset)){
+      if(chosenDate >= (dateCheck.getTime() + dateOffset)){
         chosenDate = this.state.date
         alert("Unable to retrieve data from the future. I haven't invented time travel yet.")
+      }else{
+        chosenDate = chosenDate.toISOString().slice(0,10)
+        this.setState({date: chosenDate})
+        this.props.dateChange(chosenDate)
       }
-      
-      chosenDate = chosenDate.toISOString().slice(0,10)
-      this.setState({date: chosenDate})
-      this.props.dateChange(chosenDate)
     }
 
     readMore = () =>{
