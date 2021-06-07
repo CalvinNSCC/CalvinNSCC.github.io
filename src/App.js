@@ -9,7 +9,7 @@ function App() {
     <div>
       <NavBar />
       <Main />
-      <Footer />
+      {/* <Footer /> */}
     </div>
     
   );

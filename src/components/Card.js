@@ -30,7 +30,7 @@ class Card extends React.Component{
 
       var dateOffset = (24*60*60*1000);
       var chosenDate = new Date(this.state.date);
-      var dateCheck = new Date();
+      var dateCheck = new Date(this.state.date);
 
 
       console.log(chosenDate.toISOString().slice(0,10))
