@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import '../css/App.css'
 
 class Card extends React.Component{
@@ -7,13 +7,15 @@ class Card extends React.Component{
       super(props);
       this.state = {};
       this.onDateChange = this.onDateChange.bind(this);
+      this.swapAccessible = this.swapAccessible.bind(this);
     }
 
     componentDidMount = () =>{
       var today = new Date();
       this.setState({
         readMore: false,
-        date: today.toISOString().slice(0,10)
+        date: today.toISOString().slice(0,10),
+        accessible: false
       })
     }
 
@@ -28,15 +30,14 @@ class Card extends React.Component{
       //https://stackoverflow.com/questions/1296358/how-to-subtract-days-from-a-plain-date
       //turn the currentDate.value into a date object and substract a day or add a day
 
-      var dateOffset = (24*60*60*1000);
-      var chosenDate = new Date(this.state.date);
-      var dateCheck = new Date(this.state.date);
+      var dateOffset = (24*60*60*1000);//equal to a full day (24hrs) - useful for adding or subtracting a day
+      var chosenDate = new Date(this.state.date);//date taken from the date input
+      var dateCheck = new Date(this.state.date);//date to check against the date input for pagination
 
 
       console.log(chosenDate.toISOString().slice(0,10))
-      chosenDate.setTime(chosenDate.getTime() - dateOffset)
-      
-      if(chosenDate < dateCheck){
+      chosenDate.setTime(chosenDate.getTime() - dateOffset)//subtracting a day to get the day prior
+      if(chosenDate < (dateCheck - dateOffset)){
         chosenDate = this.state.date
         alert("Unable to retrieve data from the past. I haven't invented time travel yet.")
       }else{
@@ -50,11 +51,11 @@ class Card extends React.Component{
     getNextDay = () =>{
       var dateOffset = (24*60*60*1000);
       var chosenDate = new Date(this.state.date);
-      var dateCheck = new Date();
+      var dateCheck = new Date(this.state.date + dateOffset);
     
       chosenDate.setTime(chosenDate.getTime() + dateOffset)
-      if(chosenDate > dateCheck){
-        chosenDate = dateCheck
+      if(chosenDate >= (dateCheck + dateOffset)){
+        chosenDate = this.state.date
         alert("Unable to retrieve data from the future. I haven't invented time travel yet.")
       }
       
@@ -71,6 +72,14 @@ class Card extends React.Component{
       }
     }
 
+    swapAccessible = () =>{
+      if(this.state.accessible){
+        this.setState({accessible: false})
+      }else{
+        this.setState({accessible: true})
+      }
+    }
+
     render(){
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
@@ -80,7 +89,22 @@ class Card extends React.Component{
 
         return(
             <div>
-              <h1 className='mx-auto' id = "title">{this.props.data.title}</h1>
+              <div>
+                {this.state.accessible ?(
+                  <h1 className='mx-auto' id = "title">{this.props.data.title}</h1>
+                  ):(
+                    <h1 className='mx-auto' id = "title-regular-font">{this.props.data.title}</h1>
+                  )
+                }
+                <input type = "checkbox" id = "access" onChange={this.swapAccessible}></input>
+                <label htmlFor = "access">Filler text</label>
+              </div>
+
+              <div id = "access-checkbox">
+                
+              </div>
+              
+              
               <div className="card mb-4 box-shadow">
                 {this.props.data.media_type === "image" ? (
                     <img 
@@ -109,15 +133,18 @@ class Card extends React.Component{
                         <button type="button" className="btn btn-sm btn-success" onClick={this.readMore}>More info</button>
                       )}
                     </div>
+
                     <p className = "mt-2 font-weight-bold">Enter the date you would like to see</p>
                     <div className = "d-inline-flex">
                       <input type="date" className="mr-4" max = {today} min = "1995-06-16" name = 'currentDate' ref={(c) => this.currentDate = c}></input>
                       <button type="button" className="btn btn-sm btn-info" onClick={this.onDateChange}>Submit</button>
                     </div>
+
                     <div className = "d-flex py-3 justify-content-between">
                       <button className='btn btn-sm btn-outline-secondary' onClick={this.getPrevDay}>Previous day</button>
                       <button className='btn btn-sm btn-outline-secondary' onClick={this.getNextDay}>Next day</button>
                     </div>
+
                 </div>  
             </div>
           </div>
