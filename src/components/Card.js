@@ -35,8 +35,8 @@ class Card extends React.Component{
       var dateCheck = new Date(this.state.date);//date to check against the date input for pagination
 
       chosenDate.setTime(chosenDate.getTime() - dateOffset)//subtracting a day to get the day prior
-      if(chosenDate <= (dateCheck.getTime() - dateOffset)){
-        chosenDate = this.state.date
+      //Making sure that the chosenDate isn't more than one greater than the dateChecker
+      if(chosenDate < (dateCheck.getTime() - dateOffset)){
         alert("Unable to retrieve data from the past. I haven't invented time travel yet.")
       }else{
         chosenDate = chosenDate.toISOString().slice(0,10)
@@ -51,8 +51,8 @@ class Card extends React.Component{
       var dateCheck = new Date(this.state.date);
     
       chosenDate.setTime(chosenDate.getTime() + dateOffset)
-      if(chosenDate >= (dateCheck.getTime() + dateOffset)){
-        chosenDate = this.state.date
+
+      if(chosenDate > (dateCheck.getTime() + dateOffset)){
         alert("Unable to retrieve data from the future. I haven't invented time travel yet.")
       }else{
         chosenDate = chosenDate.toISOString().slice(0,10)
@@ -93,14 +93,12 @@ class Card extends React.Component{
                     <h1 className='mx-auto' id = "title-regular-font">{this.props.data.title}</h1>
                   )
                 }
-                
               </div>
 
               <div id = "access-checkbox" className="d-block text-center ">
                 <input type = "checkbox" id = "access" className="mr-2" onChange={this.swapAccessible}></input>
                 <label htmlFor = "access">Click here to disable the wacky title font</label>
               </div>
-              
               
               <div className="card mb-4 box-shadow">
                 {this.props.data.media_type === "image" ? (
@@ -116,6 +114,12 @@ class Card extends React.Component{
                     <iframe title={this.props.data.title} width = "800" height = "480" src = {this.props.data.url}></iframe>
                   </div>
                 )}
+                {this.props.data.copyright ? (
+                  <small className="d-block text-right mr-4 text-muted">Copyright: <br/>{this.props.data.copyright}</small>
+                  ):(
+                  <small className="d-block text-right mr-4 text-muted">No copyright<br/> info available</small>
+                  )
+                }
                   <div className="card-body">
                     {this.state.readMore ? (
                       <p className="card-text">{this.props.data.explanation}</p>
